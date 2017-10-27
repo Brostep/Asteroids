@@ -1,43 +1,49 @@
-﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class Bullet : MonoBehaviour
-{
-    public float movementSpeed;
-    public float lifeTime;
+public class Bullet: MonoBehaviour {
 
-    private float currentTime;
+	public float movementSpeed;
+	public float lifeTime;
 
-    void Update()
-    {
-        currentTime += Time.deltaTime;
+	private float currentTime;
 
-        if (currentTime >= lifeTime)
-        {
-            BulletsSpawner.Instance.ReturnBulletToPool(this);
-        }
+	void Update()
+	{
+		currentTime += Time.deltaTime;
 
-        else
-        {
-            transform.position += transform.forward * movementSpeed * Time.deltaTime;
-        }
-    }
+		if (currentTime >= lifeTime)
+		{
+			BulletsSpawner.Instance.ReturnBulletToPool(this);
+		}
 
-    public void Initialize()
-    {
-        currentTime = 0;
+		else
+		{
+			transform.position += transform.forward * movementSpeed * Time.deltaTime;
+		}
+	}
 
-        transform.position = BulletsSpawner.Instance.transform.position;
-        transform.rotation = BulletsSpawner.Instance.transform.rotation;
-    }
+	public void Initialize()
+	{
+		currentTime = 0;
 
-    public static void InitializeBullet(Bullet bulletObj)
-    {
-        bulletObj.gameObject.SetActive(true);
-        bulletObj.Initialize();
-    }
+		transform.position = BulletsSpawner.Instance.transform.position;
+		transform.rotation = BulletsSpawner.Instance.transform.rotation;
+	}
 
-    public static void DisposeBullet(Bullet bulletObj)
-    {
-        bulletObj.gameObject.SetActive(false);
-    }
+	public static void InitializeBullet(Bullet bulletObj)
+	{
+		bulletObj.gameObject.SetActive(true);
+		bulletObj.Initialize();
+	}
+
+	public static void DisposeBullet(Bullet bulletObj)
+	{
+		bulletObj.gameObject.SetActive(false);
+	}
+	void OnCollisionEnter(Collision collision)
+	{
+		print("in");
+	}
 }
