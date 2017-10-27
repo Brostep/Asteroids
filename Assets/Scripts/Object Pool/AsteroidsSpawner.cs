@@ -6,36 +6,32 @@ public class AsteroidsSpawner : MonoBehaviour
 
     public int initialStock;
 
-    public float timeLapse;
+    public float spawnRate;
 
     private float currentTime;
 
     private Pool<Asteroid> _asteroidPool;
 
-    public Transform[] asteroidsSpawners;
-
     private static AsteroidsSpawner _instance;
 
-    public static AsteroidsSpawner Instance
-    {
-        get
-        {
-            return _instance;
-        }
-    }
+    public static AsteroidsSpawner Instance { get { return _instance; } }
 
-    void Awake()
+    private void Awake()
     {
         _instance = this;
 
-        _asteroidPool = new Pool<Asteroid>(initialStock, AsteroidFactory, Asteroid.InitializeAsteroid, Asteroid.InitializeAsteroid, true);
+        _asteroidPool = new Pool<Asteroid>(initialStock,
+                                           AsteroidFactory,
+                                           asteroidPrefab.InitializeObject,
+                                           asteroidPrefab.DiscardObject,
+                                           true);
     }
 
-    void Update()
+    private void Update()
     {
         currentTime += Time.deltaTime;
 
-        if (currentTime >= timeLapse)
+        if (currentTime >= spawnRate)
         {
             _asteroidPool.GetPoolObject();
 

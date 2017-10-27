@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BulletsSpawner : MonoBehaviour
 {
@@ -18,22 +14,20 @@ public class BulletsSpawner : MonoBehaviour
 
     private static BulletsSpawner _instance;
 
-    public static BulletsSpawner Instance
-    {
-        get
-        {
-            return _instance;
-        }
-    }
+    public static BulletsSpawner Instance { get { return _instance; } }
 
-    void Awake()
+    private void Awake()
     {
         _instance = this;
 
-        _bulletPool = new Pool<Bullet>(initialStock, BulletFactory, Bullet.InitializeBullet, Bullet.DisposeBullet, true);
+        _bulletPool = new Pool<Bullet>(initialStock,
+                                       BulletFactory,
+                                       bulletPrefab.InitializeObject,
+                                       bulletPrefab.DiscardObject,
+                                       true);
     }
 
-    void Update()
+    private void Update()
     {
         currentTime += Time.deltaTime;
 
