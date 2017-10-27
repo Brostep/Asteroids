@@ -27,14 +27,12 @@ public class Bullet : MonoBehaviour
         currentTime = 0;
 
         transform.position = BulletsSpawner.Instance.transform.position;
-
         transform.rotation = BulletsSpawner.Instance.transform.rotation;
     }
 
     public static void InitializeBullet(Bullet bulletObj)
     {
         bulletObj.gameObject.SetActive(true);
-
         bulletObj.Initialize();
     }
 

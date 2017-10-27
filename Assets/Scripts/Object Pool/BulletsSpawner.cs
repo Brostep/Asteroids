@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
+using UnityEngine;
 
 public class BulletsSpawner : MonoBehaviour
 {
@@ -37,7 +41,7 @@ public class BulletsSpawner : MonoBehaviour
         {
             _bulletPool.GetObjectFromPool();
 
-            currentTime = default(float);
+            currentTime = 0;
         }
     }
 

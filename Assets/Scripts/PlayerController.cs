@@ -1,11 +1,19 @@
 using UnityEngine;
 
+[System.Serializable]
+public class Boundary
+{
+    public float xMin, xMax, zMin, zMax;
+}
+
 public class PlayerController : MonoBehaviour
 {
-    public float displacementForce;
+    public float movementSpeed;
     public float rotationSpeed;
 
     private Rigidbody _rigidBody;
+
+    public Boundary boundary;
 
     void Start()
     {
@@ -14,23 +22,20 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.W))
-            _rigidBody.AddForce(transform.forward * displacementForce);
+        float horizontalMovement = Input.GetAxis("Horizontal");
+        float verticalMovement = Input.GetAxis("Vertical");
 
-        if (Input.GetKey(KeyCode.A))
-            _rigidBody.AddForce(-transform.right * displacementForce);
+        Vector3 movement = new Vector3(horizontalMovement, 0, verticalMovement);
 
-        if (Input.GetKey(KeyCode.S))
-            _rigidBody.AddForce(-transform.forward * displacementForce);
-
-        if (Input.GetKey(KeyCode.D))
-            _rigidBody.AddForce(transform.right * displacementForce);
+        _rigidBody.velocity = movement * movementSpeed;
+        _rigidBody.position = new Vector3(Mathf.Clamp(_rigidBody.position.x, boundary.xMin, boundary.xMax), 0,
+                                          Mathf.Clamp(_rigidBody.position.z, boundary.zMin, boundary.zMax));
 
         Plane _plane = new Plane(Vector3.up, transform.position);
 
         Ray _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        float hitDistance = default(float);
+        float hitDistance = 0;
 
         if (_plane.Raycast(_ray, out hitDistance))
         {
